@@ -1,1 +1,1 @@
-# kuberenetes-hardway-only-ec2
+# kuberenetes-hardway-only-AWS ec2 
