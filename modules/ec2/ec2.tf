@@ -1,6 +1,6 @@
 resource "aws_security_group" "web_service" {
     name = "terraform test"
-    vpc_id = aws_vpc.main.id
+    vpc_id = var.aws_vpc_id
 
     ingress {
         from_port = 22
