@@ -1,6 +1,6 @@
 resource "aws_security_group" "web_service" {
     name = "terraform test"
-    vpc_id = var.aws_vpc_id
+    vpc_id = var.vpc_id
 
     ingress {
         from_port = 22
@@ -9,10 +9,10 @@ resource "aws_security_group" "web_service" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     ingress {
-        from_port = 0 
+        from_port = 0
         to_port =  0
         protocol = "-1"
-        cidr_blocks = [var.public_subnets]
+        cidr_blocks = [var.cidr_block]
     }
     egress {
         from_port = 0
@@ -28,7 +28,7 @@ resource "aws_instance" "hardway-controller" {
     instance_type = var.instance_type
     key_name = var.key_name
     vpc_security_group_ids = [aws_security_group.web_service.id]
-    subnet_id = aws_subnet.subnet.id
+    subnet_id = var.public_subnet
 
     user_data = <<EOF
             #! /bin/bash
@@ -46,7 +46,7 @@ resource "aws_instance" "hardway-worker" {
     instance_type = var.instance_type
     key_name = var.key_name
     vpc_security_group_ids = [aws_security_group.web_service.id]
-    subnet_id = aws_subnet.subnet.id
+    subnet_id = var.public_subnet
 
     user_data = <<EOF
             #! /bin/bash
@@ -64,7 +64,7 @@ resource "aws_instance" "hardway-haproxy" {
     instance_type = var.instance_type
     key_name = var.key_name
     vpc_security_group_ids = [aws_security_group.web_service.id]
-    subnet_id = aws_subnet.subnet.id
+    subnet_id = var.public_subnet
 
     user_data = <<EOF
             #! /bin/bash
@@ -81,7 +81,7 @@ resource "aws_instance" "hardway-management" {
     instance_type = var.instance_type 
     key_name = var.key_name
     vpc_security_group_ids = [aws_security_group.web_service.id]
-    subnet_id = aws_subnet.subnet.id
+    subnet_id = var.public_subnet
 
     user_data = <<EOF
             #! /bin/bash

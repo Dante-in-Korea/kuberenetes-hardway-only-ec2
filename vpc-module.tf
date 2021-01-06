@@ -14,7 +14,9 @@ module "vpc" {
 
 module "ec2" {
     source = "./modules/ec2"
-    aws_vpc_id =  module.vpc.vpc_id
+    vpc_id =  module.vpc.vpc_id
+    cidr_block = module.vpc.cidr_block
+    public_subnet = module.vpc.public_subnet
     key_name = "test123"
     ami = "ami-03461b78fdba0ff9d"
     instance_type = "t3.small"
