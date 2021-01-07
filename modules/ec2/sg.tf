@@ -4,28 +4,28 @@ resource "aws_security_group" "web_service" {
 }
 
 resource "aws_security_group_rule" "ssh" {
-    ingress {
-        from_port = 22
-        to_port = 22
-        protocol = "ssh"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+    from_port = 22
+    to_port = 22
+    protocol = "ssh"
+    cidr_blocks = ["0.0.0.0/0"]
+    type = "ingress"
+    security_group_id = aws_security_group.web_service.id
 }
 
 resource "aws_security_group_rule" "inbound_vpc" {
-    ingress {
-        from_port = 0
-        to_port =  0
-        protocol = "-1"
-        cidr_blocks = [var.cidr_block]
-    }
+    from_port = 0
+    to_port =  0
+    protocol = "-1"
+    cidr_blocks = [var.cidr_block]
+    type = "ingress"
+    security_group_id = aws_security_group.web_service.id
 }
 
 resource "aws_security_group_rule" "outbound_vpc" {
-    egress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    type = "egress"
+    security_group_id = aws_security_group.web_service.id
 }
