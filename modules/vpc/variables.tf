@@ -13,13 +13,6 @@ variable "public_subnets" {
     type        = string
 }
 
-/*
-variable "private_subnets" {
-    description = "private subnet ip list"
-    type        = "list"
-}
-*/
-
 variable "azs" {
     description = "availability zones list"
     type        = string
