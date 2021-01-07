@@ -50,4 +50,8 @@ resource "aws_instance" "hardway-haproxy" {
     tags = {
         Name = "haproxy"
     }
+<<<<<<< HEAD:modules/ec2/ec2.tf
 }
+=======
+}
+>>>>>>> main:hardway/modules/ec2/ec2.tf
