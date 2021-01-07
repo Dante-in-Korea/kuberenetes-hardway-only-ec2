@@ -1,5 +1,5 @@
 resource "aws_instance" "hardway-controller" { 
-    count = 3
+    count = 1
     ami = var.ami
     instance_type = var.instance_type
     key_name = var.key_name
@@ -17,7 +17,7 @@ resource "aws_instance" "hardway-controller" {
 }
 
 resource "aws_instance" "hardway-worker" { 
-    count = 3
+    count = 1
     ami = var.ami
     instance_type = var.instance_type
     key_name = var.key_name
@@ -49,22 +49,5 @@ resource "aws_instance" "hardway-haproxy" {
 
     tags = {
         Name = "haproxy"
-    }
-}
-
-resource "aws_instance" "hardway-management" { 
-    ami = var.ami
-    instance_type = var.instance_type 
-    key_name = var.key_name
-    vpc_security_group_ids = [aws_security_group.web_service.id]
-    subnet_id = var.public_subnet
-
-    user_data = <<EOF
-            #! /bin/bash
-            hostnamectl set-hostname management
-    EOF
-
-    tags = {
-        Name = "management"
     }
 }
