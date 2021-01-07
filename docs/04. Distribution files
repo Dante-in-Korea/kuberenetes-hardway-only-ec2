@@ -1,0 +1,52 @@
+작업 서버: terraform 및 k8s 원격 관리 용
+
+# 초기 설정
+AWS EC2에 접근할 키 파일을 작업 서버에 /home/ec2-user/.ssh 에 업로드
+
+```
+chmod 600  ~/.ssh/test123.pem
+key=~/.ssh/test123.pem
+```
+
+## Set /etc/hosts
+HAPROXY, CONTROLLER, WORKER는 terraform으로 생성한 서버의 Public IP로 설정
+```
+HAPROXY=52.78.14.165
+CONTROLLER-0=52.78.75.75
+WORKER-0=13.209.9.234
+echo "${HAPROXY} haproxy" | sudo tee -a /etc/hosts
+echo "${CONTROLLER-0} controller-0" | sudo tee -a /etc/hosts
+echo "${WORKER-0} worker-0" | sudo tee -a /etc/hosts
+```
+
+### Distribute the kuberenetes Certifacation files to Controller Server
+```
+cd ~/keys
+for instance in controller-0; do
+  scp -i $key ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem \
+    service-account-key.pem service-account.pem ec2-user@${instance}:~/
+done
+```
+
+### Distribute the kuberenetes Certifacation files to Worker Server
+```
+for instance in worker-0; do
+  scp -i $key ca.pem ${instance}-key.pem ${instance}.pem ec2-user@${instance}:~/
+done
+```
+
+###  Distribute the kubernetes config files to controller Server
+```
+for instance in controller-0; do
+  scp -i $key ca.pem ca-key.pem kubernetes-key.pem kubernetes.pem \
+    admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig ec2-user@${instance}:~/
+done
+```
+
+### Distribute the kubernetes config files to Worker Server
+```
+for instance in worker-0; do
+  scp -i $key admin.kubeconfig kube-controller-manager.kubeconfig kube-scheduler.kubeconfig ec2-user@${instance}:~/
+done
+```
+
