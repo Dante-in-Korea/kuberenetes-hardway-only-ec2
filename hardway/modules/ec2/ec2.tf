@@ -28,7 +28,7 @@ resource "aws_instance" "hardway-worker" {
     user_data = <<EOF
             #! /bin/bash
             hostnamectl set-hostname worker-${format(count.index)}
-            pod_cidr=10.200.${format(count.index)}.0/24"
+            pod_cidr=10.200.${format(count.index)}.0/24
             echo PATH=$PATH:/usr/local/bin >> /etc/profile
             modprobe br_netfilter
             echo "net.bridge.bridge-nf-call-iptables = 1" >> /etc/sysctl.conf
