@@ -29,6 +29,7 @@ resource "aws_instance" "hardway-worker" {
             #! /bin/bash
             hostnamectl set-hostname worker-${format(count.index)}
             POD_CIDR=10.200.${format(count.index)}.0/24
+            echo $POD_CIDR > /root/POD_CIDR
             echo PATH=$PATH:/usr/local/bin >> /etc/profile
             source /etc/profile
             modprobe br_netfilter
